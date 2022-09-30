@@ -1,0 +1,23 @@
+.universes-list {
+    list-style-type: none;
+    margin-left: 10px;
+    overflow: auto;
+}
+
+    .universes-list li {
+        text-align: left;
+    }
+
+        .universes-list li a:hover {
+            background: #dee2e6;
+        }
+
+        .universes-list li a {
+            display: block;
+            /*padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 5px;*/
+            position: relative;
+            /*text-decoration: none;
+        color: #212529;*/
+        }
