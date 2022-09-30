@@ -1,5 +1,9 @@
+//Скрипт для работы с Editot.js
+
 var url = 'http://127.0.0.1:8000/api/pages/'
+//var url = 'http://127.0.0.1:8000/api/v1.0/pages/'
 var url_block = 'http://127.0.0.1:8000/api/block/'
+//var url_block = 'http://127.0.0.1:8000/api/v1.0/block/'
 var data_for_editor = ''
 var editor
 
@@ -34,27 +38,27 @@ mutationObserver.observe(document.getElementById('page_title'), {
 });
 
 
-class DataForEdit {
+class DataForEdit { // Класс описывающий данные, которые передаются в Editor
     constructor(time, blocks, version) {
         this.time = time
         this.blocks = blocks
         this.version = version
     }
 }
-class BlockEditor {
+class BlockEditor { // Класс описывающий блок для Editor
     constructor(id, type, data) {
         this.id = id
         this.type = type
         this.data = data
     }
 }
-class DataParagraph {
+class DataParagraph { // Класс описывающий блок обычного абзаца
     constructor(text, alignment) {
         this.text = text
         this.alignment = alignment
     }
 }
-class DataHeader {
+class DataHeader { // Класс описывающий блок заголовка без выравнивания
     constructor(text, level) {
         this.text = text
         this.level = level
@@ -62,7 +66,7 @@ class DataHeader {
 }
 
 
-class Block {
+class Block { // Класс описывающий блок, передаваемый серверу от Editor
     constructor(pre_block_id, id, type, content, next_block_id) {
         this.pre_block_id = pre_block_id
         this.id = id
@@ -73,20 +77,20 @@ class Block {
         //this.next_block = next_block
     }
 }
-class TypeParagraph {
+class TypeParagraph { // Класс описывающий тип блока, который передается серверу
     constructor(type, alignment) {
         this.type = type
         this.alignment = alignment
     }
 }
-class TypeHeader {
+class TypeHeader { // Класс описывающий тип блока, который передается серверу
     constructor(type, level) {
         this.type = type
         this.level = level
     }
 }
 
-class MoveBlock {
+class MoveBlock { // Класс описывающий блок, который передвигается и передается серверу 
     constructor(new_pre_block_id, pre_block_id, block_id, next_block_id, new_next_block_id) {
         this.new_pre_block_id = new_pre_block_id
         this.pre_block_id = pre_block_id
@@ -96,7 +100,7 @@ class MoveBlock {
     }
 }
 
-function to_page(id, title) {
+function to_page(id, title) { // "Переход" (отрисовка новых данных) на страницу
     location.hash = id
     let xhr = new XMLHttpRequest()
     xhr.open('GET', url + id + '/', true)
@@ -104,7 +108,7 @@ function to_page(id, title) {
     xhr.addEventListener('readystatechange', function () {
         if (xhr.readyState == 4) {
             if (xhr.status != 200) {
-                alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText); // пример вывода: 404: Not Found
+                alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText);
             } else {
                 document.getElementById('content').style.display = 'block'
                 document.getElementById('page_title').innerText = ' ' + title
@@ -154,11 +158,9 @@ function to_page(id, title) {
     })
 }
 
-function delete_block(api, event) {
+function delete_block(api, event) { // Удаление блока
     let block_id = event.detail.target.id
     let block_index = event.detail.index
-
-    //let block = api.blocks.getById(block_id)
 
     let pre_block
     if (block_index > 0) pre_block = api.blocks.getBlockByIndex(block_index - 1)
@@ -171,7 +173,6 @@ function delete_block(api, event) {
         block_id,
         (next_block) ? next_block.id : null,
         null)
-    //if (block_index < api.blocks.getBlocksCount() - 1) next_block = api.blocks.getBlockByIndex(block_index + 1)
 
     let xhr = new XMLHttpRequest();
     xhr.open('DELETE', url_block + block_id + '/', true);
@@ -180,7 +181,7 @@ function delete_block(api, event) {
     xhr.addEventListener('readystatechange', function () {
         if (xhr.readyState == 4) {
             if (xhr.status != 200) {
-                alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText); // пример вывода: 404: Not Found
+                alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText); 
             } else {
                 //alert('GOOD')
             }
@@ -188,7 +189,7 @@ function delete_block(api, event) {
     })
 }
 
-function move_block(api, event) {
+function move_block(api, event) { // Перемещение блока
     let pre_block
     if (event.detail.fromIndex > 0) pre_block = api.blocks.getBlockByIndex(event.detail.fromIndex - 1)
     if (event.detail.fromIndex > event.detail.toIndex) pre_block = api.blocks.getBlockByIndex(event.detail.fromIndex)
@@ -213,7 +214,7 @@ function move_block(api, event) {
     xhr.addEventListener('readystatechange', function () {
         if (xhr.readyState == 4) {
             if (xhr.status != 200) {
-                alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText); // пример вывода: 404: Not Found
+                alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText);
             } else {
                 //alert('GOOD')
             }
@@ -239,7 +240,7 @@ function change_block(api, event) { //Изменение блока
         xhr.addEventListener('readystatechange', function () {
             if (xhr.readyState == 4) {
                 if (xhr.status != 200) {
-                    alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText); // пример вывода: 404: Not Found
+                    alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText);
                 } else {
                     //alert('GOOD')
                 }
@@ -286,7 +287,7 @@ function parsing_blocks_for_editor(obj, blocks_arr) {
     }
     return blocks_arr
 }
-
+/*
 function parsing_blocks_for_server(blocks_arr) {
     let type = ''
     let obj_arr = new Array()
@@ -295,17 +296,17 @@ function parsing_blocks_for_server(blocks_arr) {
         if (blocks_arr[i - 1].type === "header") { type = new TypeHeader(blocks_arr[i - 1].type, blocks_arr[i - 1].data.level) }
         if (blocks_arr[i - 1].type === "paragraph") { type = new TypeHeader(blocks_arr[i - 1].type, blocks_arr[i - 1].data.alignment) }
 
-        block = new Block(blocks_arr[i - 1].id, /*is_start,*/ type, blocks_arr[i - 1].data.text, blocks_arr[i].id)
+        block = new Block(blocks_arr[i - 1].id, *is_start,* type, blocks_arr[i - 1].data.text, blocks_arr[i].id)
         obj_arr.push(block)
     }
 
     let p = blocks_arr.length - 1
     if (blocks_arr[p].type === "header") { type = new TypeHeader(blocks_arr[p].type, blocks_arr[p].data.level) }
     if (blocks_arr[p].type === "paragraph") { type = new TypeHeader(blocks_arr[p].type, blocks_arr[p].data.alignment) }
-    obj_arr.push(new Block(blocks_arr[p].id, /*false,*/ type, blocks_arr[p].data.text, ''))
+    obj_arr.push(new Block(blocks_arr[p].id, *false,* type, blocks_arr[p].data.text, ''))
     return obj_arr
 }
-
+*/
 function parsing_block_from_editor(pre_block, block, next_block) {
     let type
 

@@ -1,10 +1,10 @@
-var url = 'http://127.0.0.1:8000/api/pages/'
+// Скрипт для создания выпадающего списка страниц и работы с ним
 
-//alert(location.hash)
+var url = 'http://127.0.0.1:8000/api/pages/'
+//var url = 'http://127.0.0.1:8000/api/v1.0/pages/'
 
 
     var xhr = new XMLHttpRequest();
-    //xhr.open('GET', url + get.substr(1)+'/', true)
     xhr.open('GET', url, true)
     xhr.send();
     xhr.addEventListener('readystatechange', function () {
@@ -12,24 +12,9 @@ var url = 'http://127.0.0.1:8000/api/pages/'
             if (xhr.status != 200) {
                 alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText);
             } else {
-                //alert(xhr.responseText)
                 let subpages_list = JSON.parse(xhr.responseText)
                 let asaid = document.getElementById("left-aside")
                 var details = document.createElement("details")
-                /*var sum = document.createElement("summary")
-                var a = document.createElement('a')
-
-                //alert(subpages_list.pages_tree.title)
-                
-                a.innerText = subpages_list.pages_tree.title + ' '
-                a.href = '#'
-
-                sum.appendChild(a)
-
-                add_create_but(sum, subpages_list.pages_tree.id)
-                add_del_but(sum, subpages_list.pages_tree.id, subpages_list.pages_tree.title)
-
-                details.appendChild(sum)*/
                 create_list(details, subpages_list.pages_tree)
                 asaid.appendChild(details)
             }
@@ -39,18 +24,11 @@ var url = 'http://127.0.0.1:8000/api/pages/'
 
 function create_list(det, arr) {
     for (i in arr) {
-        //let a = document.createElement('a')
         if (arr[i].subpages.length > 0) {
             let details = document.createElement('details')
             let sum = document.createElement('summary')
-            //a.innerText = arr[i].title + ' '
-            //a.href = '#'+arr[i].id
-
-            //sum.appendChild(a)
             add_a(sum, arr[i].id, arr[i].title)
             add_lit_menu(sum, arr[i].id, arr[i].title)
-            //add_create_but(sum, arr[i].id)
-            //add_del_but(sum, arr[i].id, arr[i].title)
 
             details.appendChild(document.createElement('br'))
             details.appendChild(sum)
@@ -61,8 +39,6 @@ function create_list(det, arr) {
             let p = document.createElement('p')
             add_a(p, arr[i].id, arr[i].title)
             add_lit_menu(p, arr[i].id, arr[i].title)
-            //add_create_but(p, arr[i].id)
-            //add_del_but(p, arr[i].id, arr[i].title)
 
             det.appendChild(p)
         }
@@ -72,7 +48,6 @@ function create_list(det, arr) {
 function add_a(tag, id, title) {
     let a = document.createElement('a')
     a.innerText = title + ' '
-    //a.href = '#'// + arr[i].id
     a.setAttribute('onclick', 'to_page(' + id + ', "' + title + '");')
     tag.appendChild(a)
 }
@@ -114,10 +89,8 @@ function delete_page(id, titel) {
         xhr.addEventListener('readystatechange', function () {
             if (xhr.readyState == 4) {
                 if (xhr.status != 200) {
-                    // обработать ошибку
                     alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText); // пример вывода: 404: Not Found
                 } else {
-                    //alert(xhr.responseText); // responseText -- текст ответа.
                     location.reload();
                 }
             }
@@ -133,76 +106,10 @@ function create_page(parent) {
     xhr.addEventListener('readystatechange', function () {
         if (xhr.readyState == 4) {
             if (xhr.status != 200) {
-                // обработать ошибку
                 alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText); // пример вывода: 404: Not Found
             } else {
-                //alert(xhr.responseText); // responseText -- текст ответа.
                 location.reload();
             }
         }
     })
 }
-
-
-
-/*
-var jsn = JSON.parse('{"uviverse": "The Witcher", "pages":[{"name":"Истории", "pages": ["Последнее желание", "Меч Предназначения", "Кровь эльфов", "Час Презрения"], "href": "index3.html"}, {"name":"Персонажи", "pages": ["Геральт из Ривии", "Цири из Цинтры"], "href":"#"}, {"name":"Артефакты", "pages": ["Глаз Нехалены", "Маска Уробороса", "Сердце Мелитэле", "Магический светильник"], "href": "#"}]}')
-var asaid = document.getElementById("left-aside")
-var details = document.createElement("details")
-var summ = document.createElement("summary")
-var a = document.createElement('a')
-a.innerText = jsn.uviverse
-summ.appendChild(a)
-details.appendChild(summ)
-create_list(details, jsn.pages)
-asaid.appendChild(details)
-
-function create_details(details, arr) {
-    for (i in arr) {
-        let sum = document.createElement('summary')
-        let a = document.createElement('a')
-        if (typeof arr[i] === 'object') {
-            //alert('df')
-            let detail = document.createElement('details')
-            //detail.className = "universes-list"
-            a.innerText = Object.keys(arr[i])[0]
-            create_details(detail, arr[i][Object.keys(arr[i])[0]])
-            //li.disabled = false
-            //li.onclick = function () { this.disabled = !this.disabled }
-            detail.appendChild(a)
-            //sum.appendChild(detail)
-            //detail.appendChild(document.createElement('br'))
-            details.appendChild(detail)
-        }
-        else {
-            a.innerText = arr[i]
-            sum.appendChild(a)
-        }
-        //details.appendChild(document.createElement('br'))
-        details.appendChild(sum)
-    }
-}
-
-function create_list(det, arr) {
-    for (i in arr) {
-        let a = document.createElement('a')
-        if (typeof arr[i] === 'object') {
-            let details = document.createElement('details')
-            let sum = document.createElement('summary')
-            a.innerText = arr[i].name
-            //alert(arr[i].name)
-            a.href = arr[i].href
-            sum.appendChild(a)
-            details.appendChild(document.createElement('br'))
-            details.appendChild(sum)
-            create_list(details, arr[i].pages)
-            det.appendChild(details)
-        } else {
-            a.innerText = arr[i]
-            let p = document.createElement('p')
-            p.appendChild(a)
-            det.appendChild(p)
-        }
-    }
-}
-*/
