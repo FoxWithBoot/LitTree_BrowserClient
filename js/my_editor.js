@@ -1,9 +1,9 @@
 //Скрипт для работы с Editot.js
 
-var url = 'http://127.0.0.1:8000/api/pages/'
-//var url = 'http://127.0.0.1:8000/api/v1.0/pages/'
-var url_block = 'http://127.0.0.1:8000/api/block/'
-//var url_block = 'http://127.0.0.1:8000/api/v1.0/block/'
+//var url = 'http://127.0.0.1:8000/api/pages/'
+var url = 'http://127.0.0.1:8000/api/v1.1/pages/'
+//var url_block = 'http://127.0.0.1:8000/api/block/'
+var url_block = 'http://127.0.0.1:8000/api/v1.1/block/'
 var data_for_editor = ''
 var editor
 
@@ -13,12 +13,12 @@ var mutationObserver = new MutationObserver(function (mutations) {
         if (mutation.type === "characterData") {
             page_id = location.hash.substr(1)
             xhr = new XMLHttpRequest()
-            xhr.open('PUT', url + page_id + '/', true)
+            xhr.open('POST', url + page_id + '/', true)
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify({ 'title': mutation.target.data }))
             xhr.addEventListener('readystatechange', function () {
                 if (xhr.readyState == 4) {
-                    if (xhr.status != 200) {
+                    if (xhr.status<200 && xhr.status>300) {
                         alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText); // пример вывода: 404: Not Found
                     } else {
                         //alert(xhr.responseText)
@@ -107,12 +107,12 @@ function to_page(id, title) { // "Переход" (отрисовка новых
     xhr.send()
     xhr.addEventListener('readystatechange', function () {
         if (xhr.readyState == 4) {
-            if (xhr.status != 200) {
+            if (xhr.status<200 && xhr.status>300) {
                 alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText);
             } else {
                 document.getElementById('content').style.display = 'block'
                 document.getElementById('page_title').innerText = ' ' + title
-                let blocks = parsing_blocks_for_editor(JSON.parse(xhr.responseText).pages_content, new Array())
+                let blocks = parsing_blocks_for_editor(JSON.parse(xhr.responseText).road_content, new Array())
             /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Создание Editor.js>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
                 try {
                     document.getElementById('editorjs').innerHTML = ''
@@ -180,7 +180,7 @@ function delete_block(api, event) { // Удаление блока
     xhr.send(JSON.stringify(db))
     xhr.addEventListener('readystatechange', function () {
         if (xhr.readyState == 4) {
-            if (xhr.status != 200) {
+            if (xhr.status<200 && xhr.status>300) {
                 alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText); 
             } else {
                 //alert('GOOD')
@@ -213,7 +213,7 @@ function move_block(api, event) { // Перемещение блока
     xhr.send(JSON.stringify(mb));
     xhr.addEventListener('readystatechange', function () {
         if (xhr.readyState == 4) {
-            if (xhr.status != 200) {
+            if (xhr.status<200 && xhr.status>300) {
                 alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText);
             } else {
                 //alert('GOOD')
@@ -239,7 +239,7 @@ function change_block(api, event) { //Изменение блока
         xhr.send(JSON.stringify(parsing_block_from_editor(pre_block, outputData, next_block)))
         xhr.addEventListener('readystatechange', function () {
             if (xhr.readyState == 4) {
-                if (xhr.status != 200) {
+                if (xhr.status<200 && xhr.status>300) {
                     alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText);
                 } else {
                     //alert('GOOD')
@@ -266,7 +266,7 @@ function add_block(api, event, id, title) { //Добавление нового 
         xhr.send(JSON.stringify(parsing_block_from_editor(old_pre_block, outputData, old_next_block)))
         xhr.addEventListener('readystatechange', function () {
             if (xhr.readyState == 4) {
-                if (xhr.status != 200) {
+                if (xhr.status<200 && xhr.status>300) {
                     alert(xhr.status + ': ' + xhr.statusText + '. ' + xhr.responseText); // пример вывода: 404: Not Found
                 } else {
                     to_page(id, title)
