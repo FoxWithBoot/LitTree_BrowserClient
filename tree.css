@@ -1,0 +1,64 @@
+.tree summary::-webkit-details-marker {
+    display: none;
+}
+
+.tree summary::-moz-list-bullet {
+    list-style-type: none;
+}
+
+.tree summary::marker {
+    display: none;
+}
+
+/*.tree * :not(summary), .tree > * {
+    padding-left: 24px;
+    cursor: pointer;
+    position: relative;
+}*/
+
+.tree details, .item {
+    padding-left: 24px;
+    cursor: pointer;
+    position: relative;
+}
+
+.tree summary:before {
+    /*left: .3em;*/
+    top: .3em;
+    left: 8px;
+    color: transparent;
+    background: url("data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjM0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIzNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNOC41OSAxNi4zNGw0LjU4LTQuNTktNC41OC00LjU5TDEwIDUuNzVsNiA2LTYgNnoiLz48L3N2Zz4=") no-repeat 50% 50% / 1em 1em;
+    width: 1em;
+    height: 1em;
+    content: "";
+    position:absolute;
+    transition: transform .5s;
+}
+
+.tree details[open] > summary:before {
+    transform: rotateZ(90deg);
+}
+
+.tree summary ~ * {
+    padding: 0 0 0 1.5em;
+}
+
+.tree details[open] summary ~ * {
+    animation: sweep .5s ease-in-out;
+}
+
+@keyframes sweep {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.item > a, .p_item > a {
+    margin-right: 6px;
+    color: inherit;
+    text-decoration: none;
+}
