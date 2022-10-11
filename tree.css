@@ -10,12 +10,6 @@
     display: none;
 }
 
-/*.tree * :not(summary), .tree > * {
-    padding-left: 24px;
-    cursor: pointer;
-    position: relative;
-}*/
-
 .tree details, .item {
     padding-left: 24px;
     cursor: pointer;
@@ -23,7 +17,6 @@
 }
 
 .tree summary:before {
-    /*left: .3em;*/
     top: .3em;
     left: 8px;
     color: transparent;
@@ -61,4 +54,20 @@
     margin-right: 6px;
     color: inherit;
     text-decoration: none;
+}
+
+.item > div, .p_item > div {
+    display: flex;
+}
+
+.p_item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between
+}
+
+.item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between
 }

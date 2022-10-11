@@ -1,0 +1,6 @@
+body {
+    display: grid;
+    grid-row-gap: 10px;
+    height: 100vh;
+    grid-template-rows: 60px auto;
+}

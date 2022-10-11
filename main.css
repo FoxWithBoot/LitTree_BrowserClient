@@ -1,0 +1,78 @@
+.main {
+    display: grid;
+    grid-template-rows: min-content auto;
+    grid-row-gap: 10px;
+}
+
+.main_header {
+    min-height: 60px;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page_road {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.public_checkbox > input, canon_checkbox > input {
+    margin: 5px;
+}
+
+@media (min-width: 945px) {
+    .left_sidebar_but {
+        order: 0;
+    }
+
+    .page_road {
+        order: 1
+    }
+
+    .public_checkbox {
+        order: 2
+    }
+
+    .canon_checkbox {
+        order: 3
+    }
+
+    .btn_fork {
+        order: 4
+    }
+
+    .right_sidebar_but {
+        order: 5
+    }
+}
+
+@media (max-width: 945px) {
+    .left_sidebar_but {
+        order: 0;
+    }
+
+    .page_road {
+        order: 2
+    }
+
+    .public_checkbox {
+        order: 3
+    }
+
+    .canon_checkbox {
+        order: 4
+    }
+
+    .btn_fork {
+        order: 5
+    }
+
+    .right_sidebar_but {
+        order: 1
+    }
+}
